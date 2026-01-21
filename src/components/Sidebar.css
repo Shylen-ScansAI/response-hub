@@ -1,0 +1,23 @@
+.filter-btn {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    border: 2px solid transparent;
+    transition: transform 0.1s, opacity 0.2s;
+    opacity: 0.7;
+}
+
+.filter-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    opacity: 1;
+    border-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}

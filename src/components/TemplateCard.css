@@ -1,0 +1,232 @@
+.template-card {
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-card-border);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    border-left-width: 4px;
+    /* thick left border like screenshot */
+}
+
+/* Override border from inline style to be just left plain or full border? 
+   Screenshot shows FULL border is colored for the active card, or maybe all cards. 
+   I'll default to full thin border, colored.
+*/
+.template-card {
+    border-width: 1px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.card-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.card-actions button {
+    color: var(--color-text-secondary);
+    padding: 6px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-actions button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.menu-container {
+    position: relative;
+}
+
+.menu-trigger.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 5px);
+    right: 0;
+    background-color: #252831;
+    border: 1px solid var(--color-card-border);
+    border-radius: 8px;
+    padding: 6px;
+    z-index: 100;
+    min-width: 140px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    animation: fadeInScale 0.15s ease-out;
+}
+
+.dropdown-menu button {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+}
+
+.dropdown-menu button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dropdown-menu .delete-option {
+    color: var(--color-red);
+}
+
+.dropdown-menu .delete-option:hover {
+    background-color: rgba(248, 113, 113, 0.1);
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.card-content {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.card-content.collapsed {
+    max-height: 80px;
+    /* Show preview */
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+.card-content.expanded {
+    max-height: 1000px;
+    /* Arb large height */
+    mask-image: none;
+}
+
+.content-text {
+    white-space: pre-wrap;
+    font-family: inherit;
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.edit-content-area,
+.edit-title-input {
+    width: 100%;
+    background: #0f1115;
+    border: 1px solid var(--color-border);
+    color: white;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.edit-content-area {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.card-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* Align tags to right */
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.tag {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    /* assuming tags are colored bg, white text */
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    position: relative;
+    cursor: default;
+}
+
+.keyword-tag {
+    transition: padding-right 0.2s;
+}
+
+.keyword-tag:hover {
+    padding-right: 20px;
+}
+
+.remove-tag-btn {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    visibility: hidden;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s, visibility 0.2s;
+    padding: 0;
+}
+
+.keyword-tag:hover .remove-tag-btn {
+    opacity: 1;
+    visibility: visible;
+}
+
+.remove-tag-btn:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.expand-toggle {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 0.5rem;
+    color: var(--color-text-secondary);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 0.5rem;
+}
+
+.expand-toggle:hover {
+    color: white;
+}
