@@ -10,6 +10,10 @@ const Sidebar = ({ activeFilter, onFilterChange }) => {
 
   return (
     <div className="sidebar">
+      <div className="sidebar-header">
+        <img src="/logo.png" alt="Logo" className="sidebar-logo" />
+        <h1 className="sidebar-title">Support Response Hub</h1>
+      </div>
       {filters.map((filter) => (
         <button
           key={filter.id}
