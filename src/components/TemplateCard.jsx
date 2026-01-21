@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Edit2, Copy, Plus, X, ChevronDown, ChevronUp, MoreVertical, Trash2 } from 'lucide-react';
+import { Edit2, Copy, Plus, X, ChevronDown, ChevronUp, MoreVertical, Trash2, Check } from 'lucide-react';
 import './TemplateCard.css';
 
 const TemplateCard = ({ template, onUpdate, onDelete }) => {
@@ -40,6 +40,12 @@ const TemplateCard = ({ template, onUpdate, onDelete }) => {
         setIsEditing(false);
     };
 
+    const handleCancel = () => {
+        setTitle(template.title);
+        setContent(template.content);
+        setIsEditing(false);
+    };
+
     const handleAddKeyword = () => {
         const keyword = prompt('Enter new keyword:');
         if (keyword) {
@@ -76,33 +82,46 @@ const TemplateCard = ({ template, onUpdate, onDelete }) => {
                 )}
 
                 <div className="card-actions">
-                    <button onClick={handleCopy} title="Copy" className="copy-action-btn">
-                        <Copy size={18} />
-                    </button>
+                    {isEditing ? (
+                        <>
+                            <button onClick={handleSave} title="Save" className="save-action-btn">
+                                <Check size={18} />
+                            </button>
+                            <button onClick={handleCancel} title="Cancel" className="cancel-action-btn">
+                                <X size={18} />
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <button onClick={handleCopy} title="Copy" className="copy-action-btn">
+                                <Copy size={18} />
+                            </button>
 
-                    <div className="menu-container" ref={menuRef}>
-                        <button
-                            className={`menu-trigger ${isMenuOpen ? 'active' : ''}`}
-                            onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            title="More actions"
-                        >
-                            <MoreVertical size={18} />
-                        </button>
+                            <div className="menu-container" ref={menuRef}>
+                                <button
+                                    className={`menu-trigger ${isMenuOpen ? 'active' : ''}`}
+                                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                    title="More actions"
+                                >
+                                    <MoreVertical size={18} />
+                                </button>
 
-                        {isMenuOpen && (
-                            <div className="dropdown-menu">
-                                <button onClick={() => { setIsEditing(true); setIsMenuOpen(false); }}>
-                                    <Edit2 size={14} /> Edit
-                                </button>
-                                <button onClick={() => { handleAddKeyword(); setIsMenuOpen(false); }}>
-                                    <Plus size={14} /> Add Tag
-                                </button>
-                                <button className="delete-option" onClick={() => { onDelete(template.id); setIsMenuOpen(false); }}>
-                                    <Trash2 size={14} /> Delete
-                                </button>
+                                {isMenuOpen && (
+                                    <div className="dropdown-menu">
+                                        <button onClick={() => { setIsEditing(true); setIsExpanded(true); setIsMenuOpen(false); }}>
+                                            <Edit2 size={14} /> Edit
+                                        </button>
+                                        <button onClick={() => { handleAddKeyword(); setIsMenuOpen(false); }}>
+                                            <Plus size={14} /> Add Tag
+                                        </button>
+                                        <button className="delete-option" onClick={() => { onDelete(template.id); setIsMenuOpen(false); }}>
+                                            <Trash2 size={14} /> Delete
+                                        </button>
+                                    </div>
+                                )}
                             </div>
-                        )}
-                    </div>
+                        </>
+                    )}
                 </div>
             </div>
 

@@ -52,6 +52,16 @@
     color: white;
 }
 
+.save-action-btn:hover {
+    color: var(--color-green) !important;
+    background-color: rgba(34, 197, 94, 0.1) !important;
+}
+
+.cancel-action-btn:hover {
+    color: var(--color-red) !important;
+    background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
 .menu-container {
     position: relative;
 }
