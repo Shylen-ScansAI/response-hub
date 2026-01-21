@@ -56,7 +56,8 @@ function App() {
           title: updatedTemplate.title,
           content: updatedTemplate.content,
           keywords: updatedTemplate.keywords,
-          platform: updatedTemplate.platform
+          platform: updatedTemplate.platform,
+          is_favorite: updatedTemplate.is_favorite // Persist favorite status
         })
         .eq('id', updatedTemplate.id);
 
@@ -77,7 +78,7 @@ function App() {
       const { id, ...dataToInsert } = newTemplate;
       const { data, error } = await supabase
         .from('templates')
-        .insert([dataToInsert])
+        .insert([{ ...dataToInsert, is_favorite: false }])
         .select()
         .single();
 
@@ -108,10 +109,16 @@ function App() {
 
   const filteredTemplates = useMemo(() => {
     return templates.filter((template) => {
-      // 1. Platform Filter
-      if (filter !== 'All' && template.platform !== filter) return false;
+      // 1. Favorites Filter
+      if (filter === 'Favorites') {
+        if (!template.is_favorite) return false;
+      }
+      // 2. Platform Filter
+      else if (filter !== 'All' && template.platform !== filter) {
+        return false;
+      }
 
-      // 2. Search Filter
+      // 3. Search Filter
       if (searchQuery.trim() === '') return true;
 
       const query = searchQuery.toLowerCase();

@@ -25,25 +25,32 @@
     width: 100%;
     padding: 1rem;
     border-radius: 8px;
-    color: white;
-    font-weight: 700;
-    font-size: 1.2rem;
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    font-size: 1.1rem;
     text-transform: uppercase;
-    border: 2px solid transparent;
-    transition: transform 0.1s, opacity 0.2s;
-    opacity: 0.7;
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+    opacity: 1;
 }
 
 .filter-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
+    border-color: var(--btn-color);
+    color: var(--btn-color);
 }
 
 .filter-btn.active {
-    opacity: 1;
-    border-color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-color: var(--btn-color);
+    color: var(--btn-color);
+    background-color: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
+
+/* We need to change how the color is applied in JS. 
+   Currently: style={{ backgroundColor: var(...) }}
+   Proposed: style={{ '--btn-color': var(...) }} and use that in CSS.
+*/
 
 .sidebar {
     width: 250px;

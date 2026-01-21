@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS public.templates (
     title TEXT NOT NULL,
     content TEXT NOT NULL,
     keywords TEXT[] DEFAULT '{}',
+    is_favorite BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 

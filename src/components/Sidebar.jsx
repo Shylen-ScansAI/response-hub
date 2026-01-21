@@ -6,6 +6,7 @@ const Sidebar = ({ activeFilter, onFilterChange }) => {
     { id: 'Wati', label: 'WATI', colorVar: '--color-green' },
     { id: 'Partsmart', label: 'PARTSMART', colorVar: '--color-red' },
     { id: 'Link', label: 'LINK', colorVar: '--color-blue' },
+    { id: 'Favorites', label: 'Favourites', colorVar: '--color-yellow' },
   ];
 
   return (
@@ -18,7 +19,7 @@ const Sidebar = ({ activeFilter, onFilterChange }) => {
         <button
           key={filter.id}
           className={`filter-btn ${activeFilter === filter.id ? 'active' : ''}`}
-          style={{ backgroundColor: `var(${filter.colorVar})` }}
+          style={{ '--btn-color': `var(${filter.colorVar})` }}
           onClick={() => onFilterChange(activeFilter === filter.id ? 'All' : filter.id)}
         >
           {filter.label}
