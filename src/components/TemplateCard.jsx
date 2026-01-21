@@ -5,7 +5,7 @@ import './TemplateCard.css';
 const TemplateCard = ({ template, onUpdate, onDelete, onToggleFavorite }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [content, setContent] = useState(template.content);
     const [title, setTitle] = useState(template.title);
