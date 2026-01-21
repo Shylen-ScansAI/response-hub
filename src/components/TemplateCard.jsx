@@ -47,8 +47,12 @@ const TemplateCard = ({ template, onUpdate, onDelete }) => {
     };
 
     const handleAddKeyword = () => {
-        const keyword = prompt('Enter new keyword:');
+        let keyword = prompt('Enter new keyword:');
         if (keyword) {
+            // Capitalize each word
+            keyword = keyword.split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                .join(' ');
             onUpdate({ ...template, keywords: [...template.keywords, keyword] });
         }
     };
