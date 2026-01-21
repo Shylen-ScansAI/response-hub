@@ -238,9 +238,9 @@ export const initialTemplates = [
     {
         id: 'wati-1',
         platform: 'Wati',
-        title: 'GREETINGS & OPENERS',
+        title: 'Greeting - Help',
         content: `Good day, how may we help?`,
-        keywords: ['greeting', 'opener']
+        keywords: ['greeting', 'help']
     },
     {
         id: 'wati-2',
@@ -301,50 +301,239 @@ export const initialTemplates = [
     {
         id: 'wati-10',
         platform: 'Wati',
+        title: 'Ask for Plate Only',
+        content: `Please may you provide your license plate number of the vehicle.`,
+        keywords: ['plate']
+    },
+    {
+        id: 'wati-11',
+        platform: 'Wati',
+        title: 'Ask for Cell Only',
+        content: `Please may you provide the cell number you used to log into the app with.`,
+        keywords: ['cell']
+    },
+    {
+        id: 'wati-12',
+        platform: 'Wati',
+        title: 'Confirm Cell',
+        content: `Please confirm the cell number you are logged in with.`,
+        keywords: ['confirm', 'cell']
+    },
+    {
+        id: 'wati-13',
+        platform: 'Wati',
+        title: 'Confirm Company',
+        content: `Please confirm which company this is for.`,
+        keywords: ['company']
+    },
+    {
+        id: 'wati-14',
+        platform: 'Wati',
+        title: 'Report Expire',
+        content: `You can use the expiry date on your license disc.`,
+        keywords: ['expire', 'license disc']
+    },
+    {
+        id: 'wati-15',
+        platform: 'Wati',
         title: 'Report Status',
         content: `What is the status of the inspection in the app?`,
         keywords: ['status', 'inspection']
     },
     {
-        id: 'wati-11',
+        id: 'wati-16',
+        platform: 'Wati',
+        title: 'Re-Inspection Required',
+        content: `Seems Re-inspection is required, please see report on which pictures were incorrect and use the free credit to redo the inspection.`,
+        keywords: ['re-inspection', 'redo']
+    },
+    {
+        id: 'wati-17',
+        platform: 'Wati',
+        title: 'General Image Issue',
+        content: `Good day, It appears that some of the photos were not captured correctly. Please try follow the green guidelines within the app as closely as possible to avoid your inspection being rejected.`,
+        keywords: ['image', 'guidelines']
+    },
+    {
+        id: 'wati-18',
         platform: 'Wati',
         title: 'Rejection & Requesting Cell',
         content: `This was rejected due to the photos not being taken correctly and/or photos not being clear and visible. Please may you provide your cell number you logged into the app with.`,
         keywords: ['rejection', 'cell', 'photos']
     },
     {
-        id: 'wati-12',
+        id: 'wati-19',
         platform: 'Wati',
         title: 'Wrong VIN Photo',
         content: `Good day, it appears that you included a photo of the license disc in the VIN plate section. Unfortunately a new inspection will need to be done, please be sure to include the VIN plate on the windscreen or the body of the vehicle. Please see examples of VIN plates below:`,
         keywords: ['vin', 'photo', 'wrong']
     },
     {
-        id: 'wati-13',
+        id: 'wati-20',
+        platform: 'Wati',
+        title: 'Rear Photo Issue',
+        content: `Good day, It appears that the incorrect photo was captured for the rear/back of the vehicle. Unfortunately a new inspection will need to be done. Please try follow the green guidelines and process within the app as closely as possible to avoid your inspection being rejected.`,
+        keywords: ['rear', 'photo']
+    },
+    {
+        id: 'wati-21',
+        platform: 'Wati',
+        title: 'PRDP Not Needed',
+        content: `Good day, the PRDP is currently not compulsory and should not impact your vehicle inspection. Please may you proceed with the vehicle inspection.`,
+        keywords: ['prdp', 'compulsory']
+    },
+    {
+        id: 'wati-22',
+        platform: 'Wati',
+        title: 'Office Location',
+        content: `You are welcome to come through to our offices at 33 Fricker Road, Illovo, Sandton in the times of Monday to Friday and 8am - 4:30pm. An agent will be available to assist you in the process.`,
+        keywords: ['office', 'location']
+    },
+    {
+        id: 'wati-23',
         platform: 'Wati',
         title: 'Unable to Edit',
         content: `Unfortunately, we are not able to update any images or photos once the inspection has been done. A new inspection will need to be redone. Please try follow the green guidelines within the app as closely as possible to avoid your inspection being rejected.`,
         keywords: ['edit', 'update', 'redo']
     },
     {
-        id: 'wati-14',
+        id: 'wati-24',
+        platform: 'Wati',
+        title: 'Reset Done',
+        content: `Thank you, this assessment has been reset, please may you redo the inspection.`,
+        keywords: ['reset', 'redo']
+    },
+    {
+        id: 'wati-25',
+        platform: 'Wati',
+        title: 'Start New',
+        content: `Thank you, you can start a new full inspection when ready.`,
+        keywords: ['start new']
+    },
+    {
+        id: 'wati-26',
+        platform: 'Wati',
+        title: 'Credit Assigned',
+        content: `Thank you, Credit has now been assigned to the number provided. Please may you redo the inspection and ensure the lighting is good, the photos are clear and the car is visible. Please try follow the green guidelines within the app as closely as possible to avoid your inspection being rejected. Please note credit is only available for 24 hours.`,
+        keywords: ['credit', 'assigned']
+    },
+    {
+        id: 'wati-27',
+        platform: 'Wati',
+        title: 'Credit Expiry Warning',
+        content: `Credit is now active on the number provided, please be sure to do the inspection within 24 hours or the credit will expire.`,
+        keywords: ['credit', 'expiry']
+    },
+    {
+        id: 'wati-28',
+        platform: 'Wati',
+        title: 'Stuck Assessment',
+        content: `It appears the assessment may be stuck, unfortunately a new inspection will need to be done. Credit is now active on the number provided, please ensure you do not close the app until the inspection is done and your network connection and data is stable.`,
+        keywords: ['stuck', 'assessment']
+    },
+    {
+        id: 'wati-29',
+        platform: 'Wati',
+        title: 'VIN Plate Retry',
+        content: `Please try capturing the VIN plate multiple times if it says the VIN plate is invalid. You can tap on "Try Again", as by the 4th attempt this should then be successful and capture correctly.`,
+        keywords: ['vin', 'retry']
+    },
+    {
+        id: 'wati-30',
+        platform: 'Wati',
+        title: 'Bolt Query',
+        content: `Please may you reach out to the Bolt support team to assist with this query\nsouthafrica@bolt.eu`,
+        keywords: ['bolt', 'query', 'support']
+    },
+    {
+        id: 'wati-31',
         platform: 'Wati',
         title: 'Report Wait Time',
         content: `Please allow 30 to 60 minutes for the report to be generated and sent to you on WhatsApp. If you do not receive this report, please do let us know.`,
         keywords: ['wait time', 'report']
     },
     {
-        id: 'wati-15',
+        id: 'wati-32',
+        platform: 'Wati',
+        title: 'How to Download',
+        content: `Please note, you are able to download the report in the app. Please navigate to the "Reports" section in the app, and the at the top right hand corner of the inspection, there will be a Down Arrow (download) button. This will then download the report to your phone.`,
+        keywords: ['download', 'report']
+    },
+    {
+        id: 'wati-33',
+        platform: 'Wati',
+        title: 'Report Validity/Expiry',
+        content: `The report is valid for the same period as your license disc. If asked for an expiry date, Please use your license disc expiry date.`,
+        keywords: ['validity', 'expiry']
+    },
+    {
+        id: 'wati-34',
+        platform: 'Wati',
+        title: 'Tutorials',
+        content: `An inspection will be done through the Carscan app. You will need to be with the car, have a valid original license disc you will need to scan, and know where your VIN plate is, in order to take a photo of that VIN plate.\n\nBefore you start, there is a video you will need to watch and listen to. There are guidelines in the app (green borders) while doing the inspection, on how to capture the photos as accurately as possible. Please note, photos of the exterior, interior, license disc, VIN plate and Odometer will be required.\n\nPlease try follow the green guidelines within the app as closely as possible, as well as ensuring your photos are clear and the car is visible, to avoid your inspection being rejected.`,
+        keywords: ['tutorial', 'guide']
+    },
+    {
+        id: 'wati-35',
+        platform: 'Wati',
+        title: 'Bolt/External Guide',
+        content: `Good day, please may you check on the WhatsApp message or email sent by Bolt, this will guide you on the process as well as the guidelines within the app.`,
+        keywords: ['bolt', 'guide']
+    },
+    {
+        id: 'wati-36',
+        platform: 'Wati',
+        title: 'Reinstall App',
+        content: `Please uninstall your current Carscan app, reinstall the app and try again.`,
+        keywords: ['reinstall', 'app']
+    },
+    {
+        id: 'wati-37',
+        platform: 'Wati',
+        title: 'Try Another Device',
+        content: `Do you perhaps have another phone you can try do the inspection with?`,
+        keywords: ['device', 'phone']
+    },
+    {
+        id: 'wati-38',
         platform: 'Wati',
         title: 'Payment Link',
         content: `https://paystack.com/pay/ovs435ev46 - Please may you try using this link in order to make payment, and if successful, please send us a screenshot.`,
         keywords: ['payment', 'link', 'paystack']
     },
     {
-        id: 'wati-16',
+        id: 'wati-39',
         platform: 'Wati',
         title: 'Refund Processed',
         content: `This refund has been processed, please allow 3 - 5 business days for the funds to reflect accordingly.`,
         keywords: ['refund', 'processed']
+    },
+    {
+        id: 'wati-40',
+        platform: 'Wati',
+        title: 'Refer to Bolt',
+        content: `Good day, please may you reach out to Bolt, they will advise further. southafrica@bolt.eu`,
+        keywords: ['bolt', 'refer']
+    },
+    {
+        id: 'wati-41',
+        platform: 'Wati',
+        title: 'Payment Info Request',
+        content: `Please provide the cell number you logged into the app with, \nThe card number of the card used to make the payment and \nProof of payment`,
+        keywords: ['payment', 'info', 'card']
+    },
+    {
+        id: 'wati-42',
+        platform: 'Wati',
+        title: 'Credit or Refund',
+        content: `we can either provide a credit for a scan or alternatively a refund if you would like he refund please provide the card number of the card that was used to purchase the credit`,
+        keywords: ['credit', 'refund']
+    },
+    {
+        id: 'wati-43',
+        platform: 'Wati',
+        title: 'Different Licence Plates',
+        content: `The number plates in your recent inspection is different from the license plate done on an older inspection on this same vehicle, please send your vehicle registration certificate so we can confirm the number plate has changed`,
+        keywords: ['fraud', 'license plate', 'different']
     }
 ];
