@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
+import Login from './components/Login';
 import SearchBar from './components/SearchBar';
 import TemplateCard from './components/TemplateCard';
 import CreateTemplateModal from './components/CreateTemplateModal';
@@ -13,32 +14,58 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const fetchTemplates = async () => {
+    if (!session) return;
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
+      // 1. Fetch all templates
+      const { data: templatesData, error: templatesError } = await supabase
         .from('templates')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (templatesError) throw templatesError;
 
-      if (data.length === 0) {
-        // Seed database if empty
-        console.log('Database empty, seeding with initial templates...');
-        const { data: seededData, error: seedError } = await supabase
-          .from('templates')
-          .insert(initialTemplates.map(({ id, ...rest }) => rest)) // Don't send local IDs
-          .select();
+      // 2. Fetch user favorites
+      const { data: favoritesData, error: favoritesError } = await supabase
+        .from('favorites')
+        .select('template_id')
+        .eq('user_id', session.user.id);
 
-        if (seedError) throw seedError;
-        setTemplates(seededData);
+      if (favoritesError) throw favoritesError;
+
+      const favoritedIds = new Set(favoritesData.map(f => f.template_id));
+
+      // 3. Merge
+      const mergedTemplates = templatesData.map(t => ({
+        ...t,
+        is_favorite: favoritedIds.has(t.id)
+      }));
+
+      if (mergedTemplates.length === 0) {
+        // Seed database if empty logic (Optional: skipping re-seeding logic for brevity or keeping it simple)
+        setTemplates([]);
       } else {
-        setTemplates(data);
+        setTemplates(mergedTemplates);
       }
     } catch (err) {
-      console.error('Error fetching templates:', err.message);
+      console.error('Error fetching data:', err.message);
     } finally {
       setIsLoading(false);
     }
@@ -46,7 +73,7 @@ function App() {
 
   useEffect(() => {
     fetchTemplates();
-  }, []);
+  }, [session]);
 
   const handleUpdateTemplate = async (updatedTemplate) => {
     try {
@@ -57,7 +84,9 @@ function App() {
           content: updatedTemplate.content,
           keywords: updatedTemplate.keywords,
           platform: updatedTemplate.platform,
-          is_favorite: updatedTemplate.is_favorite // Persist favorite status
+          keywords: updatedTemplate.keywords,
+          platform: updatedTemplate.platform,
+          // is_favorite: updatedTemplate.is_favorite // REMOVED: Managed separately
         })
         .eq('id', updatedTemplate.id);
 
@@ -78,7 +107,8 @@ function App() {
       const { id, ...dataToInsert } = newTemplate;
       const { data, error } = await supabase
         .from('templates')
-        .insert([{ ...dataToInsert, is_favorite: false }])
+        .from('templates')
+        .insert([{ ...dataToInsert }]) // Removed is_favorite: false
         .select()
         .single();
 
@@ -87,6 +117,41 @@ function App() {
     } catch (err) {
       console.error('Error creating template:', err.message);
       alert('Failed to create template: ' + err.message);
+    }
+  };
+
+  const handleToggleFavorite = async (template) => {
+    if (!session) return;
+    const isFav = template.is_favorite;
+
+    // Optimistic UI Update
+    setTemplates(prev => prev.map(t =>
+      t.id === template.id ? { ...t, is_favorite: !isFav } : t
+    ));
+
+    try {
+      if (isFav) {
+        // Remove
+        const { error } = await supabase
+          .from('favorites')
+          .delete()
+          .eq('user_id', session.user.id)
+          .eq('template_id', template.id);
+        if (error) throw error;
+      } else {
+        // Add
+        const { error } = await supabase
+          .from('favorites')
+          .insert([{ user_id: session.user.id, template_id: template.id }]);
+        if (error) throw error;
+      }
+    } catch (err) {
+      console.error('Error toggling favorite:', err);
+      // Revert on error
+      setTemplates(prev => prev.map(t =>
+        t.id === template.id ? { ...t, is_favorite: isFav } : t
+      ));
+      alert('Failed to update favorite.');
     }
   };
 
@@ -130,6 +195,10 @@ function App() {
     });
   }, [templates, filter, searchQuery]);
 
+  if (!session) {
+    return <Login />;
+  }
+
   return (
     <div className="app-container">
       <Sidebar activeFilter={filter} onFilterChange={setFilter} />
@@ -159,6 +228,7 @@ function App() {
                   key={template.id}
                   template={template}
                   onUpdate={handleUpdateTemplate}
+                  onToggleFavorite={handleToggleFavorite}
                   onDelete={handleDeleteTemplate}
                 />
               ))

@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Edit2, Copy, Plus, X, ChevronDown, ChevronUp, MoreVertical, Trash2, Check, Star } from 'lucide-react';
 import './TemplateCard.css';
 
-const TemplateCard = ({ template, onUpdate, onDelete }) => {
+const TemplateCard = ({ template, onUpdate, onDelete, onToggleFavorite }) => {
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [content, setContent] = useState(template.content);
@@ -115,7 +116,7 @@ const TemplateCard = ({ template, onUpdate, onDelete }) => {
                                         <button onClick={() => { setIsEditing(true); setIsExpanded(true); setIsMenuOpen(false); }}>
                                             <Edit2 size={14} /> Edit
                                         </button>
-                                        <button onClick={() => { onUpdate({ ...template, is_favorite: !template.is_favorite }); setIsMenuOpen(false); }}>
+                                        <button onClick={() => { onToggleFavorite(template); setIsMenuOpen(false); }}>
                                             <Star size={14} fill={template.is_favorite ? "gold" : "none"} color={template.is_favorite ? "gold" : "currentColor"} />
                                             {template.is_favorite ? 'Remove Favourite' : 'Add to Favourite'}
                                         </button>
