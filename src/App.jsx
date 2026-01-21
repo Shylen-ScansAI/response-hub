@@ -59,8 +59,21 @@ function App() {
       }));
 
       if (mergedTemplates.length === 0) {
-        // Seed database if empty logic (Optional: skipping re-seeding logic for brevity or keeping it simple)
-        setTemplates([]);
+        // Seed database if empty and template table is also empty (checking original data)
+        if (templatesData.length === 0) {
+          console.log('Database empty, seeding with initial templates...');
+          const { data: seededData, error: seedError } = await supabase
+            .from('templates')
+            .insert(initialTemplates.map(({ id, ...rest }) => rest)) // Don't send local IDs
+            .select();
+
+          if (seedError) throw seedError;
+
+          // After seed, map with favorites (which are empty for new user)
+          setTemplates(seededData.map(t => ({ ...t, is_favorite: false })));
+        } else {
+          setTemplates([]);
+        }
       } else {
         setTemplates(mergedTemplates);
       }

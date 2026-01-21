@@ -54,11 +54,45 @@
 
 .sidebar {
     width: 250px;
-    height: 100%;
     background-color: #1c2839;
     padding: 2rem;
     display: flex;
     flex-direction: column;
+    height: 100vh;
+    border-right: 1px solid #334155;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.sidebar-filters {
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
-    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.3);
+    flex: 1;
+    /* Pushes logout to bottom */
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 1rem;
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: auto;
+    /* Fallback if flex doesn't work well */
+}
+
+.logout-btn:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.4);
 }
