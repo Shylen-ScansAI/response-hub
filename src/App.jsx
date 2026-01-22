@@ -120,7 +120,6 @@ function App() {
       const { id, ...dataToInsert } = newTemplate;
       const { data, error } = await supabase
         .from('templates')
-        .from('templates')
         .insert([{ ...dataToInsert }]) // Removed is_favorite: false
         .select()
         .single();
@@ -130,6 +129,40 @@ function App() {
     } catch (err) {
       console.error('Error creating template:', err.message);
       alert('Failed to create template: ' + err.message);
+    }
+  };
+
+  const handleSyncData = async () => {
+    if (!window.confirm('This will add any missing templates from the initial data file to the database. Continue?')) return;
+
+    setIsLoading(true);
+    try {
+      // Get all current titles to avoid duplicates (simple check)
+      const currentTitles = new Set(templates.map(t => t.title));
+
+      const templatesToAdd = initialTemplates.filter(t => !currentTitles.has(t.title)).map(({ id, ...rest }) => rest);
+
+      if (templatesToAdd.length === 0) {
+        alert('All templates are already up to date.');
+        setIsLoading(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('templates')
+        .insert(templatesToAdd)
+        .select();
+
+      if (error) throw error;
+
+      alert(`Successfully added ${data.length} new templates.`);
+      setTemplates(prev => [...data, ...prev]);
+
+    } catch (err) {
+      console.error('Error syncing data:', err);
+      alert('Sync failed: ' + err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -220,9 +253,18 @@ function App() {
         <div className="content-wrapper">
           <div className="header-actions">
             <SearchBar value={searchQuery} onChange={setSearchQuery} />
-            <button className="create-template-btn" onClick={() => setIsModalOpen(true)}>
-              Create +
-            </button>
+            <div className="action-buttons">
+              <button
+                className="sync-data-btn"
+                onClick={handleSyncData}
+                title="Sync missing templates from initial data"
+              >
+                Sync Data
+              </button>
+              <button className="create-template-btn" onClick={() => setIsModalOpen(true)}>
+                Create +
+              </button>
+            </div>
           </div>
 
           <div className="templates-list">
