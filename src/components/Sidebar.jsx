@@ -7,7 +7,6 @@ const Sidebar = ({ activeFilter, onFilterChange }) => {
     { id: 'Wati', label: 'WATI', colorVar: '--color-green' },
     { id: 'Partsmart', label: 'PARTSMART', colorVar: '--color-red' },
     { id: 'Link', label: 'LINK', colorVar: '--color-blue' },
-    { id: 'Favorites', label: 'Favourites', colorVar: '--color-yellow' },
   ];
 
   const handleLogout = async () => {

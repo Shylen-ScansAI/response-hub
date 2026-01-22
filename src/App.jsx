@@ -34,36 +34,17 @@ function App() {
     if (!session) return;
     setIsLoading(true);
     try {
-      // 1. Fetch all templates
-      const { data: templatesData, error: templatesError } = await supabase
+      const { data, error } = await supabase
         .from('templates')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (templatesError) throw templatesError;
+      if (error) throw error;
 
-      // 2. Fetch user favorites
-      const { data: favoritesData, error: favoritesError } = await supabase
-        .from('favorites')
-        .select('template_id')
-        .eq('user_id', session.user.id);
-
-      if (favoritesError) throw favoritesError;
-
-      const favoritedIds = new Set(favoritesData.map(f => f.template_id));
-
-      // 3. Merge
-      const mergedTemplates = templatesData.map(t => ({
-        ...t,
-        is_favorite: favoritedIds.has(t.id)
-      }));
-
-      // REMOVED: Auto-seeding logic. It was causing confusion and potentially overwriting/clearing data unexpectedly.
-      // Now we rely solely on the explicit "Sync Data" button for restoration.
-      setTemplates(mergedTemplates);
-
+      setTemplates(data || []);
     } catch (err) {
-      console.error('Error fetching data:', err.message);
+      console.error('Error fetching templates:', err.message);
+      alert('Failed to load templates: ' + err.message);
     } finally {
       setIsLoading(false);
     }
@@ -154,40 +135,7 @@ function App() {
     }
   };
 
-  const handleToggleFavorite = async (template) => {
-    if (!session) return;
-    const isFav = template.is_favorite;
 
-    // Optimistic UI Update
-    setTemplates(prev => prev.map(t =>
-      t.id === template.id ? { ...t, is_favorite: !isFav } : t
-    ));
-
-    try {
-      if (isFav) {
-        // Remove
-        const { error } = await supabase
-          .from('favorites')
-          .delete()
-          .eq('user_id', session.user.id)
-          .eq('template_id', template.id);
-        if (error) throw error;
-      } else {
-        // Add
-        const { error } = await supabase
-          .from('favorites')
-          .insert([{ user_id: session.user.id, template_id: template.id }]);
-        if (error) throw error;
-      }
-    } catch (err) {
-      console.error('Error toggling favorite:', err);
-      // Revert on error
-      setTemplates(prev => prev.map(t =>
-        t.id === template.id ? { ...t, is_favorite: isFav } : t
-      ));
-      alert('Failed to update favorite.');
-    }
-  };
 
   const handleDeleteTemplate = async (id) => {
     if (window.confirm('Are you sure you want to delete this template?')) {
@@ -208,12 +156,8 @@ function App() {
 
   const filteredTemplates = useMemo(() => {
     return templates.filter((template) => {
-      // 1. Favorites Filter
-      if (filter === 'Favorites') {
-        if (!template.is_favorite) return false;
-      }
-      // 2. Platform Filter
-      else if (filter !== 'All' && template.platform !== filter) {
+      // Platform Filter
+      if (filter !== 'All' && template.platform !== filter) {
         return false;
       }
 
@@ -271,7 +215,6 @@ function App() {
                   key={template.id}
                   template={template}
                   onUpdate={handleUpdateTemplate}
-                  onToggleFavorite={handleToggleFavorite}
                   onDelete={handleDeleteTemplate}
                 />
               ))
