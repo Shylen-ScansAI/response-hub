@@ -58,25 +58,10 @@ function App() {
         is_favorite: favoritedIds.has(t.id)
       }));
 
-      if (mergedTemplates.length === 0) {
-        // Seed database if empty and template table is also empty (checking original data)
-        if (templatesData.length === 0) {
-          console.log('Database empty, seeding with initial templates...');
-          const { data: seededData, error: seedError } = await supabase
-            .from('templates')
-            .insert(initialTemplates.map(({ id, ...rest }) => rest)) // Don't send local IDs
-            .select();
+      // REMOVED: Auto-seeding logic. It was causing confusion and potentially overwriting/clearing data unexpectedly.
+      // Now we rely solely on the explicit "Sync Data" button for restoration.
+      setTemplates(mergedTemplates);
 
-          if (seedError) throw seedError;
-
-          // After seed, map with favorites (which are empty for new user)
-          setTemplates(seededData.map(t => ({ ...t, is_favorite: false })));
-        } else {
-          setTemplates([]);
-        }
-      } else {
-        setTemplates(mergedTemplates);
-      }
     } catch (err) {
       console.error('Error fetching data:', err.message);
     } finally {
@@ -133,17 +118,20 @@ function App() {
   };
 
   const handleSyncData = async () => {
-    if (!window.confirm('This will add any missing templates from the initial data file to the database. Continue?')) return;
+    if (!window.confirm('This will add any missing default templates. Your existing custom or edited templates will be safe. Continue?')) return;
 
     setIsLoading(true);
     try {
-      // Get all current titles to avoid duplicates (simple check)
-      const currentTitles = new Set(templates.map(t => t.title));
+      // Improve duplicate detection: Check Platform + Title combination
+      const currentKeys = new Set(templates.map(t => `${t.platform}-${t.title}`));
 
-      const templatesToAdd = initialTemplates.filter(t => !currentTitles.has(t.title)).map(({ id, ...rest }) => rest);
+      const templatesToAdd = initialTemplates.filter(t => {
+        const key = `${t.platform}-${t.title}`;
+        return !currentKeys.has(key);
+      }).map(({ id, ...rest }) => rest);
 
       if (templatesToAdd.length === 0) {
-        alert('All templates are already up to date.');
+        alert('All default templates are already present.');
         setIsLoading(false);
         return;
       }
@@ -155,13 +143,13 @@ function App() {
 
       if (error) throw error;
 
-      alert(`Successfully added ${data.length} new templates.`);
-      setTemplates(prev => [...data, ...prev]);
+      alert(`Successfully restored ${data.length} missing templates.`);
+      // Refresh strictly from DB to ensure state is consistent
+      fetchTemplates();
 
     } catch (err) {
       console.error('Error syncing data:', err);
       alert('Sync failed: ' + err.message);
-    } finally {
       setIsLoading(false);
     }
   };
